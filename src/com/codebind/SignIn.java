@@ -18,6 +18,7 @@ public class SignIn {
     private JSpinner spinner2;
     private JSpinner spinner3;
     private JSpinner spinner1;
+    private JComboBox comboBox1;
 
     static JFrame frame = new JFrame("Registro MusiCore");
 
@@ -42,7 +43,8 @@ public class SignIn {
                 && !p1.equals("") && !p2.equals("")){
 
                     if (p1.equals(p2)) {
-                        c1.registrarUsuario(textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText(), p1, fecha);
+                        String item = comboBox1.getSelectedItem().toString();
+                        c1.registrarUsuario(textField1.getText(), textField2.getText(), textField3.getText(), textField4.getText(), p1, fecha, item);
                         System.out.println("Registro efectuado");
                         JOptionPane.showMessageDialog(frame,"Registro Efectuado");
                         frame.dispose();

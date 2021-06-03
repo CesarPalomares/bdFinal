@@ -26,7 +26,8 @@ public class Reproductor {
     public void iniciar(){
         this.frame.setContentPane(new Reproductor(this.nombre,this.genero).panel1);
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.frame.pack();
+        this.frame.setSize(300,450);
+        this.frame.setResizable(false);
         this.frame.setVisible(true);
     }
 }

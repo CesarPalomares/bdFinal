@@ -1,6 +1,7 @@
 package com.codebind;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Conexion {
@@ -69,12 +70,27 @@ public class Conexion {
         return salida;
     }
 
-    public void registrarUsuario(String nombre, String apellidos, String correo, String usuario, String contrasena, String fecha){
+    public void registrarUsuario(String nombre, String apellidos, String correo, String usuario, String contrasena, String fecha, String paquete){
+        LocalDate ld = LocalDate.now();
+
+        System.out.println(paquete);
+
+        if (paquete.equals("Basico")){
+            ld = ld.plusMonths(2);
+        }else if (paquete.equals("Intermedio")){
+            ld = ld.plusYears(1);
+        }else if (paquete.equals("Premium")){
+            ld = ld.plusYears(1);
+            ld = ld.plusMonths(6);
+        }
+
         try{
             Statement st = con.createStatement();
             String query = "INSERT INTO usuarios(usuario, contrasena, nombre, apellidos, fecha_nacimiento, correo) VALUES('"+usuario+"','"+contrasena+"','"+nombre+"','"+apellidos+"','"+fecha+"','"+correo+"')";
+            String query2 = "INSERT INTO subscritos(fecha_inicio,fecha_final) values(curdate(),'"+ld+"')";
 
             st.execute(query);
+            st.execute(query2);
 
 
         }catch(Exception e){

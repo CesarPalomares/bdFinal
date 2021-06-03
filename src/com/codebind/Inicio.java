@@ -21,7 +21,7 @@ public class Inicio {
     private JSpinner spinner2;
     private JButton seleccionarButton;
 
-    static JFrame frame = new JFrame("Sputufui");
+    static JFrame frame = new JFrame("MusiCore");
 
     static String usuario = "test";
 
@@ -60,7 +60,7 @@ public class Inicio {
         seleccionarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Reproductor r1 = new Reproductor(c1.datosElemento(list1.getSelectedValue().toString(),"nombre"), c1.datosElemento(list1.getSelectedValue().toString(),"genero"));
+                Reproductor r1 = new Reproductor(c1.datosElemento(list1.getSelectedValue().toString(),"nombre"), "Genero: "+c1.datosElemento(list1.getSelectedValue().toString(),"genero"));
                 r1.iniciar();
             }
         });

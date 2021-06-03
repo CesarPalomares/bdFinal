@@ -54,6 +54,9 @@ public class LogIn {
 
             if (myPass.equals(c1.buscarContrasena(textField1.getText()))){
                 System.out.println("Log In correcto");
+                Inicio i1 = new Inicio(textField1.getText());
+                i1.iniciar();
+                frame.dispose();
             }else {
                 System.out.println("Incorrecto");
                 JOptionPane.showMessageDialog(frame,"Incorrecto");

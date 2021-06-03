@@ -1,6 +1,7 @@
 package com.codebind;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Conexion {
     static Connection con;
@@ -40,6 +41,7 @@ public class Conexion {
                 salida=rs.getString("usuario");
             }
 
+
         }catch (Exception e){
             System.out.println(e);
         }
@@ -59,6 +61,7 @@ public class Conexion {
                 salida=rs.getString("contrasena");
             }
 
+
         }catch (Exception e){
             System.out.println(e);
         }
@@ -72,16 +75,63 @@ public class Conexion {
             String query = "INSERT INTO usuarios(usuario, contrasena, nombre, apellidos, fecha_nacimiento, correo) VALUES('"+usuario+"','"+contrasena+"','"+nombre+"','"+apellidos+"','"+fecha+"','"+correo+"')";
 
             st.execute(query);
+
+
         }catch(Exception e){
             System.out.println(e);
         }
     }
 
-    public void cerrarCon(){
+    public ArrayList<String> listaMusica(String lk, ArrayList<String> generos){
+        ArrayList<String> lista = new ArrayList<>();
         try{
-            con.close();
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM elementos WHERE nombre LIKE '%"+lk+"%'";
+
+            if (generos!=null){
+
+                if (generos.size()==1){
+                    query = "SELECT * FROM elementos WHERE nombre LIKE '%"+lk+"%' AND genero='"+ generos.get(0)+"'";
+                }else if (generos.size()==2){
+                    query = "SELECT * FROM elementos WHERE nombre LIKE '%"+lk+"%' AND genero='"+ generos.get(0) +"' OR genero='"+generos.get(1)+"'";
+                }else if (generos.size()==3){
+                    query = "SELECT * FROM elementos WHERE nombre LIKE '%"+lk+"%' AND genero='"+ generos.get(0) +"' OR genero='"+generos.get(1)+"'OR genero='"+generos.get(2)+"'";
+                }else if(generos.size()==4){
+                    query = "SELECT * FROM elementos WHERE nombre LIKE '%"+lk+"%' AND genero='"+ generos.get(0) +"' OR genero='"+generos.get(1)+"'OR genero='"+generos.get(2)+"' OR genero='"+generos.get(3)+"'";
+                }
+            }
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()){
+                lista.add(rs.getString("nombre"));
+            }
+
+
         }catch (Exception e){
             System.out.println(e);
         }
+
+        return lista;
+    }
+
+    public String datosElemento(String nombre, String columna){
+        String resultado = "";
+        try{
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM elementos WHERE nombre='"+nombre+"';";
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()){
+                resultado=rs.getString(columna);
+            }
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return resultado;
     }
 }

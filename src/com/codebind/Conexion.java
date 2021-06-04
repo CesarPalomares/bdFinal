@@ -74,24 +74,25 @@ public class Conexion {
         LocalDate ld = LocalDate.now();
 
         System.out.println(paquete);
+        int id_sus = 0;
 
         if (paquete.equals("Basico")){
             ld = ld.plusMonths(2);
+            id_sus = 1;
         }else if (paquete.equals("Intermedio")){
             ld = ld.plusYears(1);
+            id_sus = 2;
         }else if (paquete.equals("Premium")){
             ld = ld.plusYears(1);
             ld = ld.plusMonths(6);
+            id_sus = 3;
         }
 
         try{
             Statement st = con.createStatement();
-            String query = "INSERT INTO usuarios(usuario, contrasena, nombre, apellidos, fecha_nacimiento, correo) VALUES('"+usuario+"','"+contrasena+"','"+nombre+"','"+apellidos+"','"+fecha+"','"+correo+"')";
-            String query2 = "INSERT INTO subscritos(fecha_inicio,fecha_final) values(curdate(),'"+ld+"')";
+            String query = "CALL newUser('"+usuario+"','"+contrasena+"','"+nombre+"','"+apellidos+"','"+fecha+"','"+correo+"',"+id_sus+",'"+ld+"')";
 
             st.execute(query);
-            st.execute(query2);
-
 
         }catch(Exception e){
             System.out.println(e);
@@ -149,5 +150,64 @@ public class Conexion {
         }
 
         return resultado;
+    }
+
+    public void copiaDeSeguridad(){
+        try{
+            Statement st = con.createStatement();
+            String query="BACKUP DATABASE proyectofinal TO DISK = 'FinalDB\src\backup'";
+
+            st.execute(query);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void comentar(String comentario, int id_usr, int id_elem){
+        try{
+            Statement st = con.createStatement();
+            String query = "CALL comentar('"+comentario+"',"+id_usr+","+id_elem+")";
+
+            st.execute(query);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public static String buscarIdUsuarios(String nombre){
+        String salida = null;
+        try {
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM usuarios WHERE usuario='"+nombre+"'";
+
+            ResultSet rs = st.executeQuery(query);
+
+            while(rs.next()){
+                salida=rs.getString("id_user");
+            }
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return salida;
+    }
+
+    public ArrayList<String> listaComentarios(String id_elemento){
+        ArrayList<String> arr = new ArrayList<>();
+        try{
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM comentario WHERE id_elemento="+id_elemento;
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()){
+                arr.add(rs.getString("contenido"));
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return arr;
     }
 }

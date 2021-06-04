@@ -60,7 +60,7 @@ public class Inicio {
         seleccionarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Reproductor r1 = new Reproductor(c1.datosElemento(list1.getSelectedValue().toString(),"nombre"), "Genero: "+c1.datosElemento(list1.getSelectedValue().toString(),"genero"));
+                Reproductor r1 = new Reproductor(c1.datosElemento(list1.getSelectedValue().toString(),"nombre"), "Genero: "+c1.datosElemento(list1.getSelectedValue().toString(),"genero"), usuario);
                 r1.iniciar();
             }
         });
